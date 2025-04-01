@@ -9,21 +9,28 @@ export default function Nav() {
                                       hover:text-gray-800 
                                       hover:rounded-lg
                                       hover:animate-pulse
-                                      ">Home</Link>                                
+                                      ">Início</Link>
             <Link href="/about" className="p-2 
                                       duration-300    
                                       hover:bg-gray-200 
                                       hover:text-gray-800 
                                       hover:rounded-lg
                                       hover:animate-pulse
-                                      ">About</Link>  
+                                      ">Sobre nós</Link>
             <Link href="/contact" className="p-2 
                                       duration-300    
                                       hover:bg-gray-200 
                                       hover:text-gray-800 
                                       hover:rounded-lg
                                       hover:animate-pulse
-                                      ">Contact</Link>
-        </nav>         
+                                      ">Contatos</Link>
+            <Link href="/register" className="p-2 
+                                      duration-300    
+                                      hover:bg-gray-200 
+                                      hover:text-gray-800 
+                                      hover:rounded-lg
+                                      hover:animate-pulse
+                                      ">Cadastre-se</Link>
+        </nav>
     );
 }
