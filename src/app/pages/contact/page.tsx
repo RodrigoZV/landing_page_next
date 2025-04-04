@@ -74,7 +74,7 @@ export default function Contact() {
                         <Phone className='text-blue-900 mt-4' size={24} />
                         <span className='text-gray-700'> (47) 99999-9999</span>
                         <Mail className='text-blue-900 mt-4' size={24} />
-                        <span  className='text-gray-700'> email@email.com </span>,
+                        <span  className='text-gray-700'> email@email.com </span>
                         <MapPin className='text-blue-900 mt-4' size={24} />
                         <span  className='text-gray-700'> Av. ABC, Numero: 123, Blumenau, SC </span>
                 </div>
