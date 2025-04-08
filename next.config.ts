@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
         source: "/register",
         destination: "/pages/register",
       },
+      {
+        source: "/users",
+        destination: "/pages/users",
+      },
     ];
   },
 };

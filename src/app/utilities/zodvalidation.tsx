@@ -10,5 +10,7 @@ export const zodValidation = z.object({
         .min(8, { message: "O email deve ter pelo menos 8 caracteres" }),
     cpf: z.string()
         .min(1, { message: "O CPF é obrigatório" })
-        .length(14, { message: "O CPF deve ter 11 caracteres" })
+        .length(14, { message: "O CPF deve ter 11 caracteres" }),
+    telefone: z.string()
+        .optional()
 })

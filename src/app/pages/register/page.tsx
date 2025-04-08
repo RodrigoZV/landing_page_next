@@ -29,7 +29,8 @@ export default function Register() {
         try {
             const response = await handleADD(data);
             if (response) {
-                toast.success("Cadastrado com sucesso!")              
+                toast.success("Cadastrado com sucesso!")  
+                console.log("Dados: ", data);            
             } else {
                 toast.error("Erro ao cadastrar!")
             }
@@ -44,7 +45,7 @@ export default function Register() {
 
     return (
         <div className='container py-12 px-4 items-center h-screen'>
-            <Toaster position='top-right' reverseOrder={false} />
+            <Toaster position='bottom-right'/>
             <h1 className='text-4xl font-bold mb-6 text-center'>CADASTRE-SE </h1>
             <form className='flex flex-col bg-white shadow-md rounded-lg p-6 
                 mx-auto w-full max-w-md' onSubmit={handleSubmit(onSubmit)}>
