@@ -1,84 +1,94 @@
-"use client"
+'use client'
 
 import { useState } from 'react';
-import { zodValidation } from '../../utilities/zodvalidation';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { IMaskInput } from 'react-imask';
-import { handleADD } from '@/app/utilities/handleactions';
-import { toast, Toaster } from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
+import { z } from 'zod';
 
-type FormData = {
-    nome: string,
-    email: string,
-    cpf: string,
-    telefone?: string
-}
+import { userValidation, addressValidation } from '@/app/utilities/zodvalidation';
+import { handleADD } from '@/app/utilities/handleactions';
+import FormUserData from './formUserData';
+import FormUserAddress from './formUserAddress';
+
+const combinedSchema = z.object({
+    ...userValidation.shape,
+    ...addressValidation.shape,
+}).refine((data) => data.senha === data.confirmaSenha, {
+    path: ['confirmaSenha'],
+    message: 'As senhas não conferem',
+});
+
+type FormData = z.infer<typeof combinedSchema>;
 
 export default function Register() {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [cpfMessage, setCPFMessage] = useState("");
+    const [cpfValid, setCPFValid] = useState(false);
 
-    const { control, register, handleSubmit, formState: { errors },
-    } = useForm<FormData>({
-        resolver: zodResolver(zodValidation),
-        defaultValues: { nome: "", email: "", cpf: "", telefone: "" }
+    const methods = useForm<FormData>({
+        resolver: zodResolver(combinedSchema),
+        defaultValues: {
+            nome: "", email: "", senha: "", confirmaSenha: "", cpf: "", telefone: "",
+            cep: "", rua: "", numero: "", complemento: "", bairro: "", cidade: "", estado: ""
+        }
     });
+
+    const { register, handleSubmit, formState: { errors }, control, setValue } = methods;
 
     const onSubmit = async (data: FormData) => {
         setIsSubmitting(true);
         try {
-            const response = await handleADD(data);
-            if (response) {
-                toast.success("Cadastrado com sucesso!")  
-                console.log("Dados: ", data);            
-            } else {
-                toast.error("Erro ao cadastrar!")
-            }
-        }
-        catch (error) {
-            console.error("Erro ao adicionar o documento: ", error);
-            toast.error("Erro ao cadastrar!")
-        } finally{
+            await handleADD(data);
+            toast.success("Usuário cadastrado com sucesso!");
+            methods.reset();
+        } catch (error) {
+            console.error("Erro ao cadastrar usuário:", error);
+            toast.error("Erro ao cadastrar usuário!");
+        } finally {
             setIsSubmitting(false);
         }
-    }
+    };
 
     return (
-        <div className='container py-12 px-4 items-center h-screen'>
-            <Toaster position='bottom-right'/>
-            <h1 className='text-4xl font-bold mb-6 text-center'>CADASTRE-SE </h1>
-            <form className='flex flex-col bg-white shadow-md rounded-lg p-6 
-                mx-auto w-full max-w-md' onSubmit={handleSubmit(onSubmit)}>
-                <input type="text" placeholder='Nome'
-                    className='border-2 border-blue-900 rounded-lg p-2 mt-2 w-full'
-                    {...register("nome")} />
-                {errors.nome && <span className='text-red-500'>{errors.nome.message}</span>}
-                <input type="text" placeholder='Email'
-                    className='border-2 border-blue-900 rounded-lg p-2 mt-2 w-full'
-                    {...register("email")} />
-                {errors.email && <span className='text-red-500'>{errors.email.message}</span>}
-                <Controller control={control} name="cpf"
-                    render={({ field }) => (
-                        <IMaskInput
-                            {...field} mask="000.000.000-00" placeholder='CPF'
-                            className='border-2 border-blue-900 rounded-lg p-2 mt-2 w-full'
-                        />
-                    )}
-                />
-                {errors.cpf && <span className='text-red-500'>{errors.cpf.message}</span>}
-                <Controller control={control} name="telefone"
-                    render={({ field }) => (
-                        <IMaskInput
-                            {...field} mask="(00) 00000-0000" placeholder='Telefone'
-                            className='border-2 border-blue-900 rounded-lg p-2 mt-2 w-full'
-                        />
-                    )}
-                />
-                {errors.telefone && <span className='text-red-500'>{errors.telefone.message}</span>}
-                <button type="submit" className='bg-blue-900 text-white rounded-lg p-2 mt-4'>
-                     {isSubmitting ? "Cadastrando..." : "Cadastrar"}   
-                </button>
-            </form>
+        <div className='flex flex-col min-h-screen justify-center items-center bg-gray-100'>
+            <Toaster position="bottom-right" />
+            <div className='w-full max-w-6xl mx-auto p-4 bg-white shadow-md rounded-lg'>
+                <h1 className='text-4xl font-bold mb-6 text-center'>Cadastro</h1>
+                <form onSubmit={handleSubmit(onSubmit)} className='space-y-6'>
+                    <div className='flex flex-col md:flex-row gap-6'>
+                        <div className='flex-1'>
+                            <FormUserData 
+                                register={register} 
+                                errors={errors} 
+                                control={control}
+                                cpfMessage={cpfMessage} 
+                                setCPFMessage={setCPFMessage}
+                                cpfValid={cpfValid} 
+                                setCPFValid={setCPFValid} 
+                            />
+                        </div>
+                        <div className='flex-1'>
+                            <FormUserAddress 
+                                register={register} 
+                                errors={errors} 
+                                control={control} 
+                                setValue={setValue} 
+                            />
+                        </div>
+                    </div>
+                    <div className='flex justify-center'>
+                        <button
+                            type="submit"
+                            disabled={isSubmitting || cpfValid === false}
+                            className={`bg-blue-900 text-white font-bold py-2 px-6 rounded-lg 
+                            ${isSubmitting ? "opacity-50 cursor-not-allowed" : ""}`}
+                        >
+                            {isSubmitting ? "Cadastrando..." : "Cadastrar"}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
