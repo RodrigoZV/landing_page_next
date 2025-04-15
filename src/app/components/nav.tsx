@@ -24,13 +24,6 @@ export default function Nav() {
                                       hover:rounded-lg
                                       hover:animate-pulse
                                       ">Contatos</Link>
-            <Link href="/register" className="p-2 
-                                      duration-300    
-                                      hover:bg-gray-200 
-                                      hover:text-gray-800 
-                                      hover:rounded-lg
-                                      hover:animate-pulse
-                                      ">Cadastre-se</Link>
             <Link href="/users" className="p-2 
                                       duration-300    
                                       hover:bg-gray-200 
