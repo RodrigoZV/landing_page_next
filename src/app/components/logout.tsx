@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { signOut } from 'firebase/auth';
 import { auth } from '@/app/lib/firebase';
@@ -17,4 +17,15 @@ export default function LogOut() {
             console.error('Erro ao sair:', error);
         }
     };
+
+    return (
+        <div>
+            {user ? (
+                <p>Bem-vindo, {user?.email || 'Usuário'}!</p>
+            ) : (
+                <p>Você não está autenticado.</p>
+            )}
+            <button onClick={handleLogout}>Sair</button>
+        </div>
+    );
 }
