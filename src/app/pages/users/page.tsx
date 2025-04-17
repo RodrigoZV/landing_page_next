@@ -1,5 +1,6 @@
 "use client"
 
+<<<<<<< HEAD
 import { useAuth } from '@/app/lib/useauth';
 import { useEffect, useState } from "react"
 import { handleSelectAll, handleDelete, handleUpdate } from "@/app/utils/handlecollection"
@@ -7,6 +8,14 @@ import { toast, Toaster } from "react-hot-toast"
 import { Trash2, ClipboardEdit, X } from "lucide-react"
 import { useRouter } from 'next/navigation';
 import LoginComponent from '@/app/components/login'; // ajuste para o caminho correto
+=======
+import type React from "react"
+
+import { useEffect, useState } from "react"
+import { handleSelectAll, handleDelete, handleUpdate } from "../../utilities/handleactions"
+import { toast, Toaster } from "react-hot-toast"
+import { Trash2, ClipboardEdit, X } from "lucide-react"
+>>>>>>> f725b2acd16fb484591e34d69d551b52edf75ee6
 
 interface User {
   id: string
@@ -21,6 +30,7 @@ export default function Users() {
   const [loading, setLoading] = useState(true)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+<<<<<<< HEAD
   const [showLoginModal, setShowLoginModal] = useState(false)
 
   const { user } = useAuth();
@@ -35,6 +45,10 @@ export default function Users() {
       return;
     }
 
+=======
+
+  useEffect(() => {
+>>>>>>> f725b2acd16fb484591e34d69d551b52edf75ee6
     async function fetchUsers() {
       setLoading(true)
       const data = await handleSelectAll()
@@ -45,6 +59,7 @@ export default function Users() {
       }
       setLoading(false)
     }
+<<<<<<< HEAD
 
     fetchUsers()
   }, [user])
@@ -57,6 +72,10 @@ export default function Users() {
       </>
     )
   }
+=======
+    fetchUsers()
+  }, [])
+>>>>>>> f725b2acd16fb484591e34d69d551b52edf75ee6
 
   const deleteUser = async (id: string) => {
     const confirmDelete = window.confirm("Você tem certeza que deseja excluir este usuário?")
@@ -221,4 +240,8 @@ export default function Users() {
       )}
     </div>
   )
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> f725b2acd16fb484591e34d69d551b52edf75ee6
